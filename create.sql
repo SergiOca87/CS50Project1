@@ -6,7 +6,7 @@ CREATE TABLE books (
     title VARCHAR NOT NULL,
     author VARCHAR NOT NULL,
     pub_year INTEGER NOT NULL
-);
+)
 
 -- User Table
 CREATE TABLE users (

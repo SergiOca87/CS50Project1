@@ -1,0 +1,22 @@
+    {% extends "layout.html" %}
+
+    {% block heading %}
+        User Name: {{ userName }}
+    {% endblock %}
+
+    {% block subtitle %}
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus earum perferendis, eaque quae, voluptates illo ipsa quo itaque ad quidem fuga, distinctio cum cupiditate consequuntur ullam quaerat assumenda voluptatibus numquam.
+    {% endblock %}
+
+    {% block body %}
+        <p>
+           A route to display the books a user has submitted, or maybe saved?
+        </p>
+
+        <ul>
+            {% for book in userBooks %}
+            <li>{{ book }}</li>
+            {% endfor %}
+        </ul>
+       
+    {% endblock %}

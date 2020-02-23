@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>CS50 Project 1</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
     <nav>
-        <a href="" class="btn">Log in - Log out</a>
+        Navbar
     </nav>
 
     <section class="hero">
@@ -19,7 +19,6 @@
     </section>
      <!-- HTML Blocks for templates, reusable pages with dynamic content -->
    
-
    {% block body %}
    {% endblock %}
     

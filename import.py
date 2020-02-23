@@ -1,12 +1,14 @@
 import csv
 import os
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 
-engine = create_engine(
-    "postgres://jsxjwzavvxjudn:574e4c91abeea383f5d4881a0bf5f8cafbc0eecff2063a95c2be4c4c51e2f541@ec2-54-246-90-10.eu-west-1.compute.amazonaws.com:5432/d8p7h9ntpmhmk2")
-db = scoped_session(sessionmaker(bind=engine))
+from flask import Flask, render_template, request
+from models import *
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db.init_app(app)
 
 
 def main():

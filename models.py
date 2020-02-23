@@ -1,10 +1,12 @@
 # Where we define classes, classes interact directly with our db
 #For any table inside of the database, there is one class defined inside models.py.
 # Books
+import os
 
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
+# from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 #Flask SQLAlchemy not allowed for this project
 # class Book(db.Model):
