@@ -2,8 +2,19 @@ import os
 
 from flask import Flask, render_template, request, session
 from flask_session import Session
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import scoped_session, sessionmaker
+
+# sqlalchemy is used to use sql commands in flask apps, to communicate with dbs
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+# The engine Object manages connections to the DB, ittranslates Python to SQl for us and gets results back from the DB
+# It uses a env variable for the DB URL
+engine = create_engine(os.getenv("DATABASE_URL"))
+
+# Scoped sessions are used to handle multiple connections from different users
+# The db variable is what will allow us to run SQL commands
+db = scoped_session(sessionmaker(bind=engine))
+
 
 app = Flask(__name__)
 
@@ -62,6 +73,9 @@ Session(app)
 # Users should be able to type in the ISBN number of a book, the title of a book, or the author of a book.
 # After performing the search, your website should display a list of possible matching results, or some sort of message if there were no matches.
 # If the user typed in only part of a title, ISBN, or author name, your search page should find matches for those as well!
+# Should I retrieve and display all of the books assdociated with a user?
+# SELECT title, name FROM books JOIN users ON users.user_id = users.id;
+
 
 
 # Book Page: When users click on a book from the results of the search page, they should be taken to a book page,
@@ -74,6 +88,7 @@ Session(app)
 
 # The user must be able to search for a book and retrieve it
 # Use a search and a form for this with a post method
+
 
 
 # Goodreads Review Data: On your book page, you should also display (if available) the average rating and number of ratings the work has received from Goodreads.
@@ -111,8 +126,21 @@ def index():
     return render_template('index.html', loggedIn=loggedIn, name=name)
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+
+    # Get user and password, look it up in the db:
+    name = request.form.get("name")
+    password = request.form.get("password")
+     # SELECT * FROM users;
+        # WHERE (username = username)
+        # AND (password = password);
+
+    # Retrieve a list of the books from the User:
+    books = db.execute("SELECT isbn, title, author, pub_year, user FROM books JOIN users ON users.book_id = books.id").fetchall()
+    for book in books:
+        print(f"{book.title}")
+
     return render_template('login.html')
 
 # This Route accepts get and Post methods,
@@ -120,11 +148,19 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     name = request.form.get("name")
+    password = request.form.get("password")
 
     if request.method == "GET":
         return render_template('register.html')
     else:
         loggedIn = True 
+
+        # # Insert user into the DB?
+        # INSERT INTO users (name, password) VALUES (name, password);
+
+        # # retrieve users from table
+        # SELECT * FROM users;
+
         return render_template('index.html', name=name, loggedIn=loggedIn)
 
 # Example of a dynamic route
