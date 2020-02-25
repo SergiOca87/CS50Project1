@@ -1,16 +1,12 @@
     {% extends "layout.html" %}
 
     {% block heading %}
-        Book Title: {{ title }}
-    {% endblock %}
-
-    {% block subtitle %}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus earum perferendis, eaque quae, voluptates illo ipsa quo itaque ad quidem fuga, distinctio cum cupiditate consequuntur ullam quaerat assumenda voluptatibus numquam.
+        Book Details
     {% endblock %}
 
     {% block body %}
         <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, rerum maiores! Corporis sapiente quia labore reiciendis ullam placeat quis. Dignissimos, doloribus quas? Ratione reiciendis, harum aut delectus commodi totam necessitatibus.
+            Title:{{ book.title }}, Year: {{ book.pub_year }}
         </p>
 
        

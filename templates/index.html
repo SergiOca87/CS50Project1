@@ -17,15 +17,32 @@
             <h1>Hello {{ name }}</h1>
 
             <form action="{{ url_for('index') }}" method="post">
-                <input type="text" name="book">
-                <button>Add Book</button>
+                <input type="text" name="book" placeholder="search book">
+                <button>Search</button>
             </form>
-            <p>Your list of reviewed books:</p>
+
+            <p>List of results</p>
+            <ul>
+                {% for book in books %}
+                    <li>
+                        <!-- create here the url to the "single book" page -->
+                        <a href="{{ url_for('book', title=book.title) }}">
+                            {{ book.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <!-- <p>Your list of reviewed books:</p>
             <ul>
                 {% for book in books %}
                     <li>{{ book }}</li>
                 {% endfor %}
-            </ul>
+            </ul> -->
+
+            
+
+
         {% else %}
             <h1>Please <a href="{{ url_for('login') }}">Log in</a> or <a href="{{ url_for('register') }}">Register</a></h1>
         {% endif %}

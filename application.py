@@ -107,39 +107,55 @@ name = ''
 # Sessions do work but loggedIn and Name are global variables to test things out
 # I should identify how to use Databases and Sessions together, is that necessary?
 # Or does a DB substitutes Sessions alltogether?
+# airline1 has info on how to query a relationship, could use it to relate books with users
+
+# I guess sessions could be used to keep track of a user if they are logged in, in a current session
+
+# In line 201, book is undefined, we are close
+
 @app.route("/", methods=["GET", "POST"])
 def index():
 
     # Check if there is anything in the books Session first
-    if session.get('books') is None:
+    # if session.get('books') is None:
         # Initiate an empty list of books for this session
-        session["books"] = []
+        # session["books"] = []
 
     # If the user is logged in, they would see a form
     # Which they can POST, and we can use Session to store the book they submit
     if request.method == "POST":
-        book = request.form.get("book")
-        session["books"].append(book)
-        loggedIn=True
-        return render_template('index.html', loggedIn=loggedIn, name=name, books=session["books"])
+        searchValue = request.form.get("book")
 
+        if db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).rowcount == 0:
+            return render_template("error.html", message="Sorry, the book you were looking for was not found.")
+        return render_template('book.html', searchValue=searchValue)
+        # session["books"].append(book)
+        # loggedIn=True
+    
     return render_template('index.html', loggedIn=loggedIn, name=name)
+        # try / except for handling empty imputs?
+
+   
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
-    # Get user and password, look it up in the db:
-    name = request.form.get("name")
-    password = request.form.get("password")
-     # SELECT * FROM users;
-        # WHERE (username = username)
-        # AND (password = password);
+    # Get user and pass, look it up in the db:
+    if request.method == "POST":
+        username = request.form.get("name")
+        password = request.form.get("password")
+        # SELECT * FROM users;
+            # WHERE (username = username)
+            # AND (pass = pass);
+        if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username" : username, "pass" : password}).rowcount == 0:
+            return render_template("error.html", message="Sorry, the username or pass does not match")
+        return render_template('index.html', name=username, loggedIn=True)
 
     # Retrieve a list of the books from the User:
-    books = db.execute("SELECT isbn, title, author, pub_year, user FROM books JOIN users ON users.book_id = books.id").fetchall()
-    for book in books:
-        print(f"{book.title}")
+    # books = db.execute("SELECT isbn, title, author, pub_year, user FROM books JOIN users ON users.book_id = books.id").fetchall()
+    # for book in books:
+    #     print(f"{book.title}")
 
     return render_template('login.html')
 
@@ -147,7 +163,7 @@ def login():
 # Get so we can see the page. Post so we can post the register form
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    name = request.form.get("name")
+    username = request.form.get("name")
     password = request.form.get("password")
 
     if request.method == "GET":
@@ -156,23 +172,36 @@ def register():
         loggedIn = True 
 
         # # Insert user into the DB?
-        # INSERT INTO users (name, password) VALUES (name, password);
+        # INSERT INTO users (name, pass) VALUES (name, pass);
 
         # # retrieve users from table
         # SELECT * FROM users;
 
-        return render_template('index.html', name=name, loggedIn=loggedIn)
+        if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username" : username, "pass" : password}).rowcount == 0:
+            db.execute("INSERT INTO users (username, pass) VALUES (:username, :pass)", {"username": username, "pass": password})
+            db.commit()
+        return render_template("error.html", message="We already have an account with that name and pass")
+       
+        return render_template('success.html')
+
 
 # Example of a dynamic route
 # @app.route("/<string:name>")
 # def hello(name):
 #     return "Hello, {}!".format(name)
 
-# Route with a variable
-@app.route('/book')
-def book():
-    title = "Book Title Test"
-    return render_template('book.html', title=title)
+# Single Book route
+# maybe use isbn as the url?
+@app.route('/book/<string:searchValue>')
+def book(searchValue):
+    
+    # First thing is to check that the book exists
+    book = db.execute("SELECT * FROM books WHERE title = :title", {"title": searchValue}).fetchone()
+    if book is None:
+        return render_template("error.html", message="Sorry, this book was not found in our database")
+
+    # if the book is found, render the book template passing in the book details
+    render_template("book.html", book=book)
 
 
 @app.route('/user')
