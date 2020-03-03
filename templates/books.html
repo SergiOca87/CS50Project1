@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    First Page
+{% endblock %}
+
+{% block subtitle %}
+    A Python, Javascript and PostgreSQL App, using the Goodreads API
+{% endblock %}
+
+{% block body %}
+    <p>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, rerum maiores! Corporis sapiente quia labore reiciendis ullam placeat quis. Dignissimos, doloribus quas? Ratione reiciendis, harum aut delectus commodi totam necessitatibus.
+    </p>
+
+    
+        
+        <p>List of results</p>
+        <ul>
+            {% for book in books %}
+                <li>
+                    <!-- create here the url to the "single book" page -->
+                    <a href="{{ url_for('book', title=book.title) }}">
+                        {{ book.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- <p>Your list of reviewed books:</p>
+        <ul>
+            {% for book in books %}
+                <li>{{ book }}</li>
+            {% endfor %}
+        </ul> -->
+
+        
+
+
+   
+
+{% endblock %}

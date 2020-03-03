@@ -5,22 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>CS50 Project 1</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <nav>
-        Navbar
-    </nav>
-
-    <section class="hero">
-        <h1>{% block heading %} {% endblock %}</h1> 
-        <p>{% block subtitle %} {% endblock %}</p>
-    </section>
+    {% block body %}
+        
      <!-- HTML Blocks for templates, reusable pages with dynamic content -->
-   
-   {% block body %}
-   {% endblock %}
+    {% endblock %}
     
 </body>
 </html>

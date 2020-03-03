@@ -1,3 +1,152 @@
+@font-face {
+  font-family: 'Muli-Medium';
+  src: url("../static/fonts/Muli-Medium.eot");
+  src: url("../static/fonts/Muli-Medium.eot?#iefix") format("embedded-opentype"), url("../static/fonts/Muli-Medium.woff2") format("woff2"), url("../static/fonts/Muli-Medium.woff") format("woff"), url("../static/fonts/Muli-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Muli-Semi-Bold';
+  src: url("../static/fonts/Muli-SemiBold.eot");
+  src: url("../static/fonts/Muli-SemiBold.eot?#iefix") format("embedded-opentype"), url("../static/fonts/Muli-SemiBold.woff2") format("woff2"), url("../static/fonts/Muli-SemiBold.woff") format("woff"), url("../static/fonts/Muli-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Satisfy-Regular';
+  src: url("../static/fonts/Satisfy-Regular.eot");
+  src: url("../static/fonts/Satisfy-Regular.eot?#iefix") format("embedded-opentype"), url("../static/fonts/Satisfy-Regular.woff2") format("woff2"), url("../static/fonts/Satisfy-Regular.woff") format("woff"), url("../static/fonts/Satisfy-Regular.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'SpecialElite-Regular';
+  src: url("../static/fonts/SpecialElite-Regular.eot");
+  src: url("../static/fonts/SpecialElite-Regular.eot?#iefix") format("embedded-opentype"), url("../static/fonts/SpecialElite-Regular.woff2") format("woff2"), url("../static/fonts/SpecialElite-Regular.woff") format("woff"), url("../static/fonts/SpecialElite-Regular.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal; }
+
+html {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 62.5%;
+  color: #000; }
+  @media only screen and (max-width: 640px) {
+    html {
+      font-size: 55%; } }
+
 body {
-    background-color: #f4f4f4;
-}
+  padding: 0;
+  margin: 0;
+  font-family: 'Muli-Medium', sans-serif;
+  font-size: 1.6rem;
+  overflow-x: hidden;
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+h1, h2, h3, h4 {
+  font-family: 'Muli-Semi-Bold', sans-serif; }
+
+h1 {
+  font-size: 5rem;
+  line-height: 4.5rem; }
+
+p.lead {
+  font-size: 2rem; }
+
+a.btn {
+  width: 15rem;
+  background-color: #115a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 2rem;
+  text-decoration: none;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  color: #fff;
+  transition: all 300ms;
+  font-family: 'Satisfy-Regular', cursive;
+  -webkit-box-shadow: inset 0px 0px 3px 3px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset 0px 0px 3px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0px 0px 3px 3px rgba(0, 0, 0, 0.5); }
+  a.btn:hover {
+    background-color: #1ea74d; }
+
+section {
+  min-height: 30vh; }
+
+.max-width-container {
+  max-width: 122rem;
+  padding: 0 2rem;
+  margin: 0 auto;
+  width: 100%;
+  z-index: 10; }
+
+.typewriter {
+  font-family: 'SpecialElite-Regular', cursive; }
+  .typewriter span {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    padding-bottom: 1px; }
+
+.homepage {
+  height: 100vh;
+  min-height: 70rem;
+  background-image: url("./img/library1.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative; }
+  .homepage__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(27, 40, 69, 0.9);
+    z-index: 0; }
+  .homepage__hero {
+    min-height: 30rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: unset;
+    -ms-flex-pack: unset;
+    justify-content: unset;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative; }
+    .homepage__hero__intro {
+      z-index: 10;
+      color: #fff;
+      max-width: 60rem; }
+  .homepage__login__form {
+    position: relative;
+    border-radius: 5px;
+    padding: 2rem;
+    color: #000;
+    background-color: #e5e0d1;
+    max-width: 50rem;
+    margin: 0 auto;
+    z-index: 10; }
+    .homepage__login__form__buttons {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: unset;
+      -ms-flex-align: unset;
+      align-items: unset; }
+      .homepage__login__form__buttons .btn {
+        margin: 0 10px 0 10px; }

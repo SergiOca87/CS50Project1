@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Caveat';
+    src: url('Caveat-Bold.eot');
+    src: url('Caveat-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Caveat-Bold.woff2') format('woff2'),
+        url('Caveat-Bold.woff') format('woff'),
+        url('Caveat-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Caveat';
+    src: url('Caveat-Regular.eot');
+    src: url('Caveat-Regular.eot?#iefix') format('embedded-opentype'),
+        url('Caveat-Regular.woff2') format('woff2'),
+        url('Caveat-Regular.woff') format('woff'),
+        url('Caveat-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+

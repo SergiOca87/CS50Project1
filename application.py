@@ -128,7 +128,8 @@ def index():
 
         if db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).rowcount == 0:
             return render_template("error.html", message="Sorry, the book you were looking for was not found.")
-        return render_template('book.html', searchValue=searchValue)
+        books = db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).fetchall()
+        return render_template('books.html', books=books)
         # session["books"].append(book)
         # loggedIn=True
     
@@ -192,16 +193,16 @@ def register():
 
 # Single Book route
 # maybe use isbn as the url?
-@app.route('/book/<string:searchValue>')
-def book(searchValue):
+@app.route('/book/<string:title>')
+def book(title):
     
     # First thing is to check that the book exists
-    book = db.execute("SELECT * FROM books WHERE title = :title", {"title": searchValue}).fetchone()
+    book = db.execute("SELECT * FROM books WHERE title = :title", {"title": title}).fetchone()
     if book is None:
         return render_template("error.html", message="Sorry, this book was not found in our database")
 
     # if the book is found, render the book template passing in the book details
-    render_template("book.html", book=book)
+    return render_template("book.html", book=book)
 
 
 @app.route('/user')

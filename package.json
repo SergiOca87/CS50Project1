@@ -1,0 +1,23 @@
+{
+  "name": "project1",
+  "version": "1.0.0",
+  "description": "Web Programming with Python and JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "watch:sass": "node-sass static/style.scss static/style.css -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergiOca87/CS50Project1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergiOca87/CS50Project1/issues"
+  },
+  "homepage": "https://github.com/SergiOca87/CS50Project1#readme",
+  "dependencies": {
+    "node-sass": "^4.13.1"
+  }
+}
