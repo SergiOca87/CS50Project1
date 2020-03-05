@@ -13,6 +13,12 @@
            A route to display the books a user has submitted, or maybe saved?
         </p>
 
+        <div class="top-center paper-div">
+            <h2 class="typewriter">
+                Hello {{ name }}!
+            </h2>
+        </div>
+
         <ul>
             {% for book in userBooks %}
             <li>{{ book }}</li>

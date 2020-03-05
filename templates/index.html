@@ -3,21 +3,21 @@
  
    {% block body %}
     <main class="homepage">
-        <div class="homepage__overlay"></div>
+        
         <section class="homepage__hero">
             <div class="max-width-container">
                 <div class="homepage__hero__intro">
                     <h1 class=>CS50 Web - Project 1</h1>
-                    <p class="lead">A book Review App coded in Python, Javascript and PostgreSQL App, using the Goodreads API</p>
+                    <p class="lead">A book Review App coded in Python, Javascript and a PostgreSQL, using the Goodreads API</p>
                 </div>
             </div>
         </section>
 
-        <section class="homepage__login__form">
+        <section class="homepage__login__form form">
             <h3 class="typewriter">Please <span>LOG IN</span> or <span>REGISTER</span> to search and review Books:</h3>
-            <div class="homepage__login__form__buttons">
-                <a class="btn btn-blue" href="{{ url_for('login') }}">Log in</a>
-                <a class="btn btn-blue" href="{{ url_for('register') }}">Register</a>
+            <div class="form__buttons">
+                <a class="btn" href="{{ url_for('login') }}">Log in</a>
+                <a class="btn" href="{{ url_for('register') }}">Register</a>
             </div>
         </section>
     </main>

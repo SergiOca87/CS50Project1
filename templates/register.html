@@ -9,11 +9,12 @@
     {% endblock %}
 
     {% block body %}
-        <div>
-            <form action="{{ url_for('register') }}" method="post">
-                <input type="text" name="name" placeholder="Enter Your Name">
-                <input type="password" name="password" placeholder="Enter a password">
-                <button>Register</button>
+        <div class="text-center center-top">
+            <form action="{{ url_for('register') }}" method="post" class="form small">
+                <h3 class="typewriter">Register in order to access the App</h3>
+                <input type="text" name="username" placeholder="Enter Your Name">
+                <input type="password" name="password" placeholder="Enter password">
+                <button class="btn right">Register</button>
             </form>
         </div>
     {% endblock %}

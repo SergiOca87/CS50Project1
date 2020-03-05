@@ -114,33 +114,29 @@ p {
     }
 }
 
-a {
-
-    &.btn {
-        width: 15rem;
-        background-color: $green;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem 2rem;
-        text-decoration: none;
-        font-size: 2.2rem;
-        letter-spacing: 1px;
-        color: #fff;
-        transition: all 300ms;
-        font-family: 'Satisfy-Regular', cursive;
-        -webkit-box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.5);
-        -moz-box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.5);
-         box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.5);
-
-        &:hover {
-            background-color: #1ea74d;
-        }
-    }
-}
 
 section {
 	min-height: 30vh;
+}
+
+body {
+    height: 100vh;
+    min-height: 70rem;
+    background-image: url('./img/library1.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(27, 40, 69, .9);
+        z-index: 0;
+
+    }
 }
 
 .max-width-container {
@@ -149,6 +145,11 @@ section {
     margin: 0 auto;
     width: 100%;
     z-index: 10;
+}
+
+.center-top {
+    @include display-flex(row, center, unset);
+    padding-top: 10rem;
 }
 
 .typewriter {
@@ -160,33 +161,95 @@ section {
     }
 }
 
+.paper-div {
+    @include display-flex(column, unset, unset);
+    position: relative;
+    border-radius: 5px;
+    padding: 2rem;
+    color: #000;
+    // height: 20rem;
+    background-color: $white;
+    max-width: 50rem;
+    margin: 0 auto;
+    z-index: 10;
+}
+
+.form {
+    position: relative;
+    border-radius: 5px;
+    padding: 2rem;
+    color: #000;
+    // height: 20rem;
+    background-color: $white;
+    max-width: 50rem;
+    margin: 0 auto;
+    z-index: 10;
+
+    &__buttons {
+        @include display-flex(row, center, unset);
+
+        .btn {
+            margin: 0 10px 0 10px;
+            cursor: pointer;
+        }
+    }
+
+    input {
+        width: 87%;
+        display: block;
+        // max-width: 30rem;
+        height: 5rem;
+        padding: 0 2rem;
+        margin: 0 auto 2rem auto;
+    }
+
+    &.small {
+        max-width: 38rem;
+        width: 100%;
+        padding: 1rem 2rem;
+    }
+}
+
+
+.btn {
+    width: 15rem;
+    background-color: $green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+    text-decoration: none;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    color: #fff;
+    transition: all 300ms;
+    font-family: 'Satisfy-Regular', cursive;
+    -webkit-box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.5);
+        box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.5);
+    cursor: pointer;
+
+    &:hover {
+        background-color: #1ea74d;
+    }
+
+    &.right {
+        margin-left: auto;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
 // Homepage
 .homepage {
-    height: 100vh;
-    min-height: 70rem;
-    background-image: url('./img/library1.jpg');
-    background-size: cover;
-    background-position: center;
-    position: relative;
-
-    &__overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(27, 40, 69, .9);
-        z-index: 0;
-
-    }
     
     &__hero {
         min-height: 30rem;
         @include display-flex(row, unset, center);
         position: relative;
         
-        
-
         &__intro {
             z-index: 10;
             color: #fff;
@@ -194,23 +257,7 @@ section {
         }
     }
 
-    &__login__form {
-        position: relative;
-        border-radius: 5px;
-        padding: 2rem;
-        color: #000;
-        // height: 20rem;
-        background-color: $white;
-        max-width: 50rem;
-        margin: 0 auto;
-        z-index: 10;
-
-        &__buttons {
-            @include display-flex(row, center, unset);
-
-            .btn {
-                margin: 0 10px 0 10px;
-            }
-        }
-    }
+    // &__login__form {
+       
+    // }
 }

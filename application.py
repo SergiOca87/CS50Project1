@@ -144,14 +144,14 @@ def login():
 
     # Get user and pass, look it up in the db:
     if request.method == "POST":
-        username = request.form.get("name")
+        username = request.form.get("username")
         password = request.form.get("password")
         # SELECT * FROM users;
             # WHERE (username = username)
             # AND (pass = pass);
-        if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username" : username, "pass" : password}).rowcount == 0:
+        if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username": username, "pass": password}).rowcount == 0:
             return render_template("error.html", message="Sorry, the username or pass does not match")
-        return render_template('index.html', name=username, loggedIn=True)
+        return render_template('user.html', name=username, loggedIn=True)
 
     # Retrieve a list of the books from the User:
     # books = db.execute("SELECT isbn, title, author, pub_year, user FROM books JOIN users ON users.book_id = books.id").fetchall()
@@ -164,7 +164,7 @@ def login():
 # Get so we can see the page. Post so we can post the register form
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    username = request.form.get("name")
+    username = request.form.get("username")
     password = request.form.get("password")
 
     if request.method == "GET":
@@ -178,12 +178,14 @@ def register():
         # # retrieve users from table
         # SELECT * FROM users;
 
-        if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username" : username, "pass" : password}).rowcount == 0:
+        if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username": username, "pass": password}).rowcount == 0:
             db.execute("INSERT INTO users (username, pass) VALUES (:username, :pass)", {"username": username, "pass": password})
             db.commit()
+            return render_template('success.html')
         return render_template("error.html", message="We already have an account with that name and pass")
+        
        
-        return render_template('success.html')
+    
 
 
 # Example of a dynamic route

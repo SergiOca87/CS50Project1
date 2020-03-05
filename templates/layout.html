@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
-    {% block body %}
-        
-     <!-- HTML Blocks for templates, reusable pages with dynamic content -->
+    <div class="overlay"></div>
+    {% block body %}   
+        <!-- HTML Blocks for templates, reusable pages with dynamic content -->
     {% endblock %}
-    
 </body>
 </html>
