@@ -1,32 +1,35 @@
 {% extends "layout.html" %}
 
 {% block heading %}
-    First Page
+    
 {% endblock %}
 
 {% block subtitle %}
-    A Python, Javascript and PostgreSQL App, using the Goodreads API
+    
 {% endblock %}
 
 {% block body %}
-    <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, rerum maiores! Corporis sapiente quia labore reiciendis ullam placeat quis. Dignissimos, doloribus quas? Ratione reiciendis, harum aut delectus commodi totam necessitatibus.
-    </p>
 
-    
-        
-        <p>List of results</p>
-        <ul>
+<section class="book">
+    <div class="max-width-container">
+        <div class="text-center">
+            <h1 class="typewriter white">List of results</h1>
+        </div>
+        <ul class="book__grid">
             {% for book in books %}
-                <li>
+                <li class="book__card">
                     <!-- create here the url to the "single book" page -->
-                    <a href="{{ url_for('book', title=book.title) }}">
-                        {{ book.title }}
-                    </a>
+                    <h3 class="typewriter">{{ book.title }}</h3>
+                    <p>Author: {{ book.author }}</p>
+                    <p>Year: {{ book.year }}</p>
+                    <p>isbn: {{ book.isbn }}</p>
+                    <p>Goodreads AVG: </p>
+                    <a href="{{ url_for('book', title=book.title) }}">Review</a>
                 </li>
             {% endfor %}
         </ul>
-
+    </div>
+</section>
         <!-- <p>Your list of reviewed books:</p>
         <ul>
             {% for book in books %}

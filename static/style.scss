@@ -99,7 +99,8 @@ body {
 }
 
 h1, h2, h3, h4 {
-	font-family: 'Muli-Semi-Bold', sans-serif;
+    font-family: 'Muli-Semi-Bold', sans-serif;
+    margin-top: 0;
 }
 
 h1 {
@@ -116,7 +117,9 @@ p {
 
 
 section {
-	min-height: 30vh;
+    min-height: 30vh;
+    z-index: 10;
+    position: relative;
 }
 
 body {
@@ -137,6 +140,11 @@ body {
         z-index: 0;
 
     }
+}
+
+nav {
+    position: relative;
+    z-index: 10;
 }
 
 .max-width-container {
@@ -210,6 +218,9 @@ body {
     }
 }
 
+.white {
+    color: $white;
+}
 
 .btn {
     width: 15rem;
@@ -260,4 +271,23 @@ body {
     // &__login__form {
        
     // }
+}
+
+//Books
+.book {
+    padding-top: 10rem;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 20px;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__card {
+        padding: 2rem;
+        background-color: $white;
+        border-radius: 5px;
+    }
 }

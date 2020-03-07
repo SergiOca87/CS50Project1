@@ -46,7 +46,8 @@ body {
   -moz-osx-font-smoothing: grayscale; }
 
 h1, h2, h3, h4 {
-  font-family: 'Muli-Semi-Bold', sans-serif; }
+  font-family: 'Muli-Semi-Bold', sans-serif;
+  margin-top: 0; }
 
 h1 {
   font-size: 5rem;
@@ -56,7 +57,9 @@ p.lead {
   font-size: 2rem; }
 
 section {
-  min-height: 30vh; }
+  min-height: 30vh;
+  z-index: 10;
+  position: relative; }
 
 body {
   height: 100vh;
@@ -73,6 +76,10 @@ body {
     height: 100%;
     background-color: rgba(27, 40, 69, 0.9);
     z-index: 0; }
+
+nav {
+  position: relative;
+  z-index: 10; }
 
 .max-width-container {
   max-width: 122rem;
@@ -163,6 +170,9 @@ body {
     width: 100%;
     padding: 1rem 2rem; }
 
+.white {
+  color: #e5e0d1; }
+
 .btn {
   width: 15rem;
   background-color: #115a2a;
@@ -208,3 +218,16 @@ body {
     z-index: 10;
     color: #fff;
     max-width: 60rem; }
+
+.book {
+  padding-top: 10rem; }
+  .book__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    padding: 0;
+    list-style: none; }
+  .book__card {
+    padding: 2rem;
+    background-color: #e5e0d1;
+    border-radius: 5px; }

@@ -1,11 +1,7 @@
     {% extends "layout.html" %}
 
     {% block heading %}
-        User Name: {{ userName }}
-    {% endblock %}
 
-    {% block subtitle %}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus earum perferendis, eaque quae, voluptates illo ipsa quo itaque ad quidem fuga, distinctio cum cupiditate consequuntur ullam quaerat assumenda voluptatibus numquam.
     {% endblock %}
 
     {% block body %}
@@ -13,10 +9,18 @@
            A route to display the books a user has submitted, or maybe saved?
         </p>
 
-        <div class="top-center paper-div">
+        <div class="top-center paper-div paper-div-big">
             <h2 class="typewriter">
-                Hello {{ name }}!
+                Hello {{ username[0] }}!
             </h2>
+            <p>&nbsp;&nbsp;Here you can search for books in our database, see their average review on Goodreads and leave your own review:</p>
+
+            <div class="text-center">
+                <form action="{{ url_for('user') }}" method="post" class="form small">
+                    <input type="text" name="booksearch" placeholder="Search for a books isbn, name, author...">
+                    <button class="btn right">Search</button>
+                </form>
+            </div>
         </div>
 
         <ul>

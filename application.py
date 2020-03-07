@@ -105,8 +105,9 @@ name = ''
 
 # State of the App:
 # Sessions do work but loggedIn and Name are global variables to test things out
-# I should identify how to use Databases and Sessions together, is that necessary?
-# Or does a DB substitutes Sessions alltogether?
+# I should identify how to use Databases and Sessions together.
+
+
 # airline1 has info on how to query a relationship, could use it to relate books with users
 
 # I guess sessions could be used to keep track of a user if they are logged in, in a current session
@@ -123,13 +124,13 @@ def index():
 
     # If the user is logged in, they would see a form
     # Which they can POST, and we can use Session to store the book they submit
-    if request.method == "POST":
-        searchValue = request.form.get("book")
+    # if request.method == "POST":
+    #     searchValue = request.form.get("book")
 
-        if db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).rowcount == 0:
-            return render_template("error.html", message="Sorry, the book you were looking for was not found.")
-        books = db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).fetchall()
-        return render_template('books.html', books=books)
+    #     if db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).rowcount == 0:
+    #         return render_template("error.html", message="Sorry, the book you were looking for was not found.")
+    #     books = db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).fetchall()
+    #     return render_template('books.html', books=books)
         # session["books"].append(book)
         # loggedIn=True
     
@@ -142,23 +143,29 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
+    if session.get("user") is None:
+        session["user"] = []
     # Get user and pass, look it up in the db:
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+        session["user"] = []
+        session["user"].append(username)
         # SELECT * FROM users;
             # WHERE (username = username)
             # AND (pass = pass);
         if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username": username, "pass": password}).rowcount == 0:
             return render_template("error.html", message="Sorry, the username or pass does not match")
-        return render_template('user.html', name=username, loggedIn=True)
+        return render_template('user.html', username=session['user'], loggedIn=True)
 
+   
+    return render_template('login.html')
     # Retrieve a list of the books from the User:
     # books = db.execute("SELECT isbn, title, author, pub_year, user FROM books JOIN users ON users.book_id = books.id").fetchall()
     # for book in books:
     #     print(f"{book.title}")
 
-    return render_template('login.html')
+    
 
 # This Route accepts get and Post methods,
 # Get so we can see the page. Post so we can post the register form
@@ -187,7 +194,11 @@ def register():
        
     
 
-
+@app.route('/logout', methods=['GET'])
+def logout():
+    if session.get("user"):
+        session["user"] = []
+    return render_template("index.html")
 # Example of a dynamic route
 # @app.route("/<string:name>")
 # def hello(name):
@@ -207,8 +218,13 @@ def book(title):
     return render_template("book.html", book=book)
 
 
-@app.route('/user')
+@app.route('/user', methods=["GET", "POST"])
 def user():
-    userName = "Joe"
-    userBooks = ['Book 1', 'Book 2', 'Book 3']
-    return render_template('user.html', userBooks=userBooks, userName=userName)
+    
+    if request.method == "POST":
+        searchValue = "%" + request.form.get("booksearch") + "%"
+
+        if db.execute("SELECT * FROM books WHERE isbn LIKE :searchValue OR title LIKE :searchValue OR author LIKE :searchValue OR year LIKE :searchValue", {"searchValue" : searchValue}).rowcount == 0:
+            return render_template("error.html", message="Sorry, the book you were looking for was not found.")
+        books = db.execute("SELECT * FROM books WHERE title LIKE :searchValue OR isbn LIKE :searchValue OR author LIKE :searchValue LIMIT 10", {"searchValue" : searchValue}).fetchall()
+        return render_template('books.html', books=books, username=session['user'])

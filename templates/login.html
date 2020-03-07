@@ -13,6 +13,7 @@
         <div class="text-center center-top">
             <form action="{{ url_for('login') }}" method="post" class="form small">
                 <h3 class="typewriter">Log in to your account</h3>
+                <p>Test: {{ username }}</p>
                 <input type="text" name="username" placeholder="Enter Your Name">
                 <input type="password" name="password" placeholder="Enter password">
                 <button class="btn right">Login</button>
