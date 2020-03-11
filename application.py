@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, render_template, request, session
 from flask_session import Session
@@ -39,7 +40,6 @@ Session(app)
 #     raise RuntimeError("DATABASE_URL is not set")
 
 
-
 # Link the Flask app with the database (no Flask app is actually being run yet).
 # db.init_app(app)
 
@@ -77,7 +77,6 @@ Session(app)
 # SELECT title, name FROM books JOIN users ON users.user_id = users.id;
 
 
-
 # Book Page: When users click on a book from the results of the search page, they should be taken to a book page,
 # details about the book: its title, author, publication year, ISBN number, and any reviews that users have left for the book on your website.
 
@@ -90,7 +89,6 @@ Session(app)
 # Use a search and a form for this with a post method
 
 
-
 # Goodreads Review Data: On your book page, you should also display (if available) the average rating and number of ratings the work has received from Goodreads.
 
 
@@ -100,7 +98,6 @@ Session(app)
 #     print(f"Book {book.id}: {book.title}")
 loggedIn = False
 name = ''
-
 
 
 # State of the App:
@@ -119,8 +116,8 @@ def index():
 
     # Check if there is anything in the books Session first
     # if session.get('books') is None:
-        # Initiate an empty list of books for this session
-        # session["books"] = []
+    # Initiate an empty list of books for this session
+    # session["books"] = []
 
     # If the user is logged in, they would see a form
     # Which they can POST, and we can use Session to store the book they submit
@@ -131,13 +128,11 @@ def index():
     #         return render_template("error.html", message="Sorry, the book you were looking for was not found.")
     #     books = db.execute("SELECT * FROM books WHERE title = :title", {"title" : searchValue}).fetchall()
     #     return render_template('books.html', books=books)
-        # session["books"].append(book)
-        # loggedIn=True
-    
-    return render_template('index.html', loggedIn=loggedIn, name=name)
-        # try / except for handling empty imputs?
+    # session["books"].append(book)
+    # loggedIn=True
 
-   
+    return render_template('index.html', loggedIn=loggedIn, name=name)
+    # try / except for handling empty imputs?
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -152,20 +147,18 @@ def login():
         session["user"] = []
         session["user"].append(username)
         # SELECT * FROM users;
-            # WHERE (username = username)
-            # AND (pass = pass);
+        # WHERE (username = username)
+        # AND (pass = pass);
         if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username": username, "pass": password}).rowcount == 0:
             return render_template("error.html", message="Sorry, the username or pass does not match")
         return render_template('user.html', username=session['user'], loggedIn=True)
 
-   
     return render_template('login.html')
     # Retrieve a list of the books from the User:
     # books = db.execute("SELECT isbn, title, author, pub_year, user FROM books JOIN users ON users.book_id = books.id").fetchall()
     # for book in books:
     #     print(f"{book.title}")
 
-    
 
 # This Route accepts get and Post methods,
 # Get so we can see the page. Post so we can post the register form
@@ -177,7 +170,7 @@ def register():
     if request.method == "GET":
         return render_template('register.html')
     else:
-        loggedIn = True 
+        loggedIn = True
 
         # # Insert user into the DB?
         # INSERT INTO users (name, pass) VALUES (name, pass);
@@ -186,13 +179,12 @@ def register():
         # SELECT * FROM users;
 
         if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username": username, "pass": password}).rowcount == 0:
-            db.execute("INSERT INTO users (username, pass) VALUES (:username, :pass)", {"username": username, "pass": password})
+            db.execute("INSERT INTO users (username, pass) VALUES (:username, :pass)", {
+                       "username": username, "pass": password})
             db.commit()
             return render_template('success.html')
         return render_template("error.html", message="We already have an account with that name and pass")
-        
-       
-    
+
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -208,9 +200,10 @@ def logout():
 # maybe use isbn as the url?
 @app.route('/book/<string:title>')
 def book(title):
-    
+
     # First thing is to check that the book exists
-    book = db.execute("SELECT * FROM books WHERE title = :title", {"title": title}).fetchone()
+    book = db.execute("SELECT * FROM books WHERE title = :title",
+                      {"title": title}).fetchone()
     if book is None:
         return render_template("error.html", message="Sorry, this book was not found in our database")
 
@@ -220,11 +213,32 @@ def book(title):
 
 @app.route('/user', methods=["GET", "POST"])
 def user():
-    
+
     if request.method == "POST":
         searchValue = "%" + request.form.get("booksearch") + "%"
 
-        if db.execute("SELECT * FROM books WHERE isbn LIKE :searchValue OR title LIKE :searchValue OR author LIKE :searchValue OR year LIKE :searchValue", {"searchValue" : searchValue}).rowcount == 0:
+        if db.execute("SELECT * FROM books WHERE isbn LIKE :searchValue OR title LIKE :searchValue OR author LIKE :searchValue OR year LIKE :searchValue", {"searchValue": searchValue}).rowcount == 0:
             return render_template("error.html", message="Sorry, the book you were looking for was not found.")
-        books = db.execute("SELECT * FROM books WHERE title LIKE :searchValue OR isbn LIKE :searchValue OR author LIKE :searchValue LIMIT 10", {"searchValue" : searchValue}).fetchall()
-        return render_template('books.html', books=books, username=session['user'])
+        books = db.execute("SELECT * FROM books WHERE title LIKE :searchValue OR isbn LIKE :searchValue OR author LIKE :searchValue LIMIT 10",
+                           {"searchValue": searchValue}).fetchall()
+
+        
+        # Retake here:
+        # Just getting the last ISBN, data only prints the last result
+        # This works to store the different isbns:
+        isbns = [];
+        length = len(books) 
+        for i in range(length): 
+            isbns.append(books[i][1]) 
+
+        print('isbns', isbns)
+        # Goodreads APP
+        res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                           params={"key": os.getenv("GOODREADSKEY"), "isbns": isbns})
+        data = res.json()
+
+        print('data', data)
+        avg_rating = data['books'][0]['average_rating']
+        return render_template('books.html', books=books, username=session['user'], avg_rating=avg_rating)
+
+        
