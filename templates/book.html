@@ -8,8 +8,14 @@
 
 
         <div class="top-center paper-div paper-div-big">
-            Title:{{ book.title }}<br>
-            Author:{{ book.author }}
+            <h1 class="typewriter">Book Details:</h1>
+            <h2>{{ book.title }}</h2>
+            <p>Author: {{ book.author }}</p>
+            <p>Year: {{ book.year }}</p>
+            <p>isbn: {{ book.isbn }}</p>
+            {% if avg_rating %}
+                <p>Goodreads AVG: {{ avg_rating }}</p>
+            {% endif %}
         </div>
         <p>
             

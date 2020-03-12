@@ -207,8 +207,21 @@ def book(title):
     if book is None:
         return render_template("error.html", message="Sorry, this book was not found in our database")
 
-    # if the book is found, render the book template passing in the book details
-    return render_template("book.html", book=book)
+    # Get the isbn from the books tuple
+    isbn = book[1]  
+
+    # Make a request to the Goodreads API using the book isbn
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("GOODREADSKEY"), "isbns": isbn})
+
+    # Parse the API result to JSON
+    data = res.json()
+
+    print(data)
+
+    avg_rating = data['books'][0]['average_rating']
+
+    # if the book is found, render the book template passing in the book details and Goodreads API response
+    return render_template("book.html", book=book, avg_rating=avg_rating)
 
 
 @app.route('/user', methods=["GET", "POST"])
