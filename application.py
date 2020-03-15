@@ -43,11 +43,17 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+
+        user = db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username": username, "pass": password}).fetchone()
+
+        if user is None:
+            return render_template("error.html", message="Sorry, the username or pass does not match")
+
         session["user"] = []
         session["user"].append(username)
-        if db.execute("SELECT * FROM users WHERE username = :username AND pass = :pass", {"username": username, "pass": password}).rowcount == 0:
-            return render_template("error.html", message="Sorry, the username or pass does not match")
-        return render_template('user.html', username=session['user'])
+        session["user"].append(user.id)
+
+        return render_template('user.html', username=session['user'][0], user_id=session['user'][1])
 
     return render_template('login.html')
 
@@ -83,16 +89,23 @@ def books(title):
 
     # First thing is to check that the book exists
     book = db.execute("SELECT * FROM books WHERE title = :title", {"title": title}).fetchone()
-    bookId = book[0]
-    reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": bookId}).fetchall()
+    bookId = book['id']
+    isbn = book['isbn']  
 
+    reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": bookId}).fetchall()
+    users = db.execute("SELECT * FROM users").fetchall()
+    reviewsBy = []
+
+    # Loop through each review to find out wich user left each review
+    for review in reviews:
+        # The id of the user used as an index, minus one as the ids are not 0 zero based
+        user=review['user_id'] - 1
+        # From the users Array, push into the reviewsBy the username, using their ids as the index (from the previous step)
+        reviewsBy.append(users[user][1])
+     
 
     if book is None:
         return render_template("error.html", message="Sorry, this book was not found in our database")
-
-    print('reviews', reviews)
-
-    isbn = book[1]  
 
     # Make a request to the Goodreads API using the book isbn
     res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("GOODREADSKEY"), "isbns": isbn})
@@ -100,10 +113,10 @@ def books(title):
     # Parse the API result to JSON
     data = res.json()
 
+    # Get the average rating from Goodreads
     avg_rating = data['books'][0]['average_rating']
 
-    # if the book is found, render the book template passing in the book details and Goodreads API response
-    return render_template("book.html", book=book, avg_rating=avg_rating, reviews=reviews)
+    return render_template("book.html", book=book, avg_rating=avg_rating, reviews=reviews, reviewsBy=reviewsBy)
 
 # Route designed to leave the reviews
 @app.route('/book', methods=["POST"]) 
@@ -113,6 +126,7 @@ def book():
     stars = int(request.form.get("stars"))
     review = request.form.get("review")
     book_id = request.form.get("book_id")
+   
 
     # Retake Here :
     # Users should not be able to submit multiple reviews for the same book.
@@ -122,8 +136,8 @@ def book():
     # Make surethe book exists.
     if db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).rowcount == 0:
         return render_template("error.html", message="No such book with that id was found in our database.")
-    db.execute("INSERT INTO reviews (stars, review, book_id) VALUES (:stars, :review, :book_id)",
-            {"stars": stars, "review": review, "book_id": book_id})
+    db.execute("INSERT INTO reviews (stars, review, book_id, user_id) VALUES (:stars, :review, :book_id, :user_id)",
+            {"stars": stars, "review": review, "book_id": book_id, "user_id": session['user'][1]})
     db.commit()
     return render_template("reviewsuccess.html")
 

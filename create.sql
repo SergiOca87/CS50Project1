@@ -5,7 +5,7 @@ CREATE TABLE books (
     isbn VARCHAR NOT NULL,
     title VARCHAR NOT NULL,
     author VARCHAR NOT NULL,
-    year VARCHAR NOT NULL,
+    year VARCHAR NOT NULL
 );
 
 -- User Table
@@ -21,5 +21,5 @@ CREATE TABLE reviews (
     stars INTEGER NOT NULL,
     review VARCHAR,
     book_id INTEGER REFERENCES books,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER REFERENCES users,
 );

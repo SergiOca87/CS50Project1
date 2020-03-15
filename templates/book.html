@@ -23,6 +23,7 @@
             {% for review in reviews %}
                 <p>Score: {{review.stars}}/5</p>
                 <p>Review: {{review.review}}</p>
+                <p>Review By: {{ reviewsBy[loop.index0] }}</p>
             {% endfor %}
             <div class="review-toggle">
                 <h3 class="typewriter">Leave a review</h3>
