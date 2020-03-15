@@ -6,7 +6,6 @@ CREATE TABLE books (
     title VARCHAR NOT NULL,
     author VARCHAR NOT NULL,
     year VARCHAR NOT NULL,
-    user_id INTEGER REFERENCES users
 );
 
 -- User Table
@@ -21,5 +20,6 @@ CREATE TABLE reviews (
     id SERIAL PRIMARY KEY,
     stars INTEGER NOT NULL,
     review VARCHAR,
-    book_id INTEGER REFERENCES books
+    book_id INTEGER REFERENCES books,
+    user_id INTEGER REFERENCES users
 );

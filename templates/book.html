@@ -7,15 +7,42 @@
     {% block body %}
 
 
-        <div class="top-center paper-div paper-div-big">
+        <div class="top-center paper-div paper-div-big book-details">
             <h1 class="typewriter">Book Details:</h1>
-            <h2>{{ book.title }}</h2>
+            <h3 class="typewriter">{{ book.title }}</h2>
             <p>Author: {{ book.author }}</p>
             <p>Year: {{ book.year }}</p>
             <p>isbn: {{ book.isbn }}</p>
             {% if avg_rating %}
                 <p>Goodreads AVG: {{ avg_rating }}</p>
             {% endif %}
+            <hr>
+            {% if reviews %}
+                <h3 class="typewriter">Reviews</h3>
+            {% endif %}
+            {% for review in reviews %}
+                <p>Score: {{review.stars}}/5</p>
+                <p>Review: {{review.review}}</p>
+            {% endfor %}
+            <div class="review-toggle">
+                <h3 class="typewriter">Leave a review</h3>
+            </div>
+            <div class="review-wrap">
+                <form action="{{ url_for('book') }}" method="post" class="form small">
+                    <p class="typewriter">Score:</p>
+                    <select name="stars" id="stars">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <input type="hidden" name="book_id" value="{{ book.id }}" />
+                    <p class="typewriter">Write a review:</p>
+                    <textarea name="review" id="review" cols="30" rows="10"></textarea>
+                    <button class="btn right">Add Review</button>
+                </form>
+            </div>
         </div>
         <p>
             

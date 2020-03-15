@@ -21,7 +21,7 @@
                     <!-- create here the url to the "single book" page -->
                     <h3 class="typewriter">{{ book.title }}</h3>
                     
-                    <a href="{{ url_for('book', title=book.title) }}">View More</a>
+                    <a href="{{ url_for('books', title=book.title) }}">View More</a>
                 </li>
             {% endfor %}
         </ul>
