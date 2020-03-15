@@ -95,14 +95,17 @@ def books(title):
     reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id": bookId}).fetchall()
     users = db.execute("SELECT * FROM users").fetchall()
     reviewsBy = []
+    allowed = True
 
-    # Loop through each review to find out wich user left each review
+    # Loop through each review to find out wich user left each review, also check if the user shoulñd be allowed to leave a new review
     for review in reviews:
         # The id of the user used as an index, minus one as the ids are not 0 zero based
         user=review['user_id'] - 1
         # From the users Array, push into the reviewsBy the username, using their ids as the index (from the previous step)
         reviewsBy.append(users[user][1])
-     
+        # Check if the user should be allowed to leave a review
+        if session['user'][1] == user:
+            allowed=False
 
     if book is None:
         return render_template("error.html", message="Sorry, this book was not found in our database")
@@ -115,8 +118,9 @@ def books(title):
 
     # Get the average rating from Goodreads
     avg_rating = data['books'][0]['average_rating']
+    ratings_count = data['books'][0]['ratings_count']
 
-    return render_template("book.html", book=book, avg_rating=avg_rating, reviews=reviews, reviewsBy=reviewsBy)
+    return render_template("book.html", book=book, avg_rating=avg_rating, ratings_count=ratings_count, reviews=reviews, reviewsBy=reviewsBy, allowed=allowed)
 
 # Route designed to leave the reviews
 @app.route('/book', methods=["POST"]) 

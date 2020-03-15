@@ -14,8 +14,6 @@
                 Hello {{ username }}!
             </h2>
             <p>&nbsp;&nbsp;Here you can search for books in our database, see their average review on Goodreads and leave your own review:</p>
-            <p>User id = {{ user_id }}</p>
-
             <div class="text-center">
                 <form action="{{ url_for('user') }}" method="post" class="form small">
                     <input type="text" name="booksearch" placeholder="Search for a books isbn, name, author...">

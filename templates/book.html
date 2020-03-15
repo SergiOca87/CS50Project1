@@ -14,7 +14,8 @@
             <p>Year: {{ book.year }}</p>
             <p>isbn: {{ book.isbn }}</p>
             {% if avg_rating %}
-                <p>Goodreads AVG: {{ avg_rating }}</p>
+                <h3 class="typewriter">Goodreads data:</h3>
+                <p>Average of <strong>{{ avg_rating }}</strong> out of <strong>{{ ratings_count }}</strong> ratings.</p>
             {% endif %}
             <hr>
             {% if reviews %}
@@ -23,31 +24,31 @@
             {% for review in reviews %}
                 <p>Score: {{review.stars}}/5</p>
                 <p>Review: {{review.review}}</p>
-                <p>Review By: {{ reviewsBy[loop.index0] }}</p>
+                <p>Review by: <strong>{{ reviewsBy[loop.index0] }}</strong></p>
+                <hr>
             {% endfor %}
-            <div class="review-toggle">
-                <h3 class="typewriter">Leave a review</h3>
-            </div>
-            <div class="review-wrap">
-                <form action="{{ url_for('book') }}" method="post" class="form small">
-                    <p class="typewriter">Score:</p>
-                    <select name="stars" id="stars">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                    <input type="hidden" name="book_id" value="{{ book.id }}" />
-                    <p class="typewriter">Write a review:</p>
-                    <textarea name="review" id="review" cols="30" rows="10"></textarea>
-                    <button class="btn right">Add Review</button>
-                </form>
-            </div>
+            {% if allowed %}
+                <div class="review-toggle">
+                    <h3 class="typewriter">Leave a review</h3>
+                </div>
+                <div class="review-wrap">
+                    <form action="{{ url_for('book') }}" method="post" class="form small">
+                        <p class="typewriter">Score:</p>
+                        <select name="stars" id="stars">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <input type="hidden" name="book_id" value="{{ book.id }}" />
+                        <p class="typewriter">Write a review:</p>
+                        <textarea name="review" id="review" cols="30" rows="10"></textarea>
+                        <button class="btn right">Add Review</button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
-        <p>
-            
-        </p>
 
        
     {% endblock %}
