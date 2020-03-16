@@ -9,22 +9,28 @@
 
         <div class="top-center paper-div paper-div-big book-details">
             <h1 class="typewriter">Book Details:</h1>
-            <h3 class="typewriter">{{ book.title }}</h2>
-            <p>Author: {{ book.author }}</p>
-            <p>Year: {{ book.year }}</p>
-            <p>isbn: {{ book.isbn }}</p>
+            <div class="book-details-block">
+                <h3 class="typewriter">{{ book.title }}</h2>
+                <p>Author: {{ book.author }}</p>
+                <p>Year: {{ book.year }}</p>
+                <p>isbn: {{ book.isbn }}</p>
+            </div>
             {% if avg_rating %}
-                <h3 class="typewriter">Goodreads data:</h3>
-                <p>Average of <strong>{{ avg_rating }}</strong> out of <strong>{{ ratings_count }}</strong> ratings.</p>
+                <div class="book-details-block">
+                    <h3 class="typewriter">Goodreads data:</h3>
+                    <p>Average of <strong>{{ avg_rating }}</strong> out of <strong>{{ ratings_count }}</strong> ratings.</p>
+                </div>
             {% endif %}
             <hr>
             {% if reviews %}
-                <h3 class="typewriter">Reviews</h3>
+                <h3 class="typewriter reviews-title">Reviews</h3>
             {% endif %}
             {% for review in reviews %}
-                <p>Score: {{review.stars}}/5</p>
-                <p>Review: {{review.review}}</p>
-                <p>Review by: <strong>{{ reviewsBy[loop.index0] }}</strong></p>
+                <div class="book-details-block">
+                    <p>Score: {{review.stars}}/5</p>
+                    <p>Review: {{review.review}}</p>
+                    <p>Review by: <strong>{{ reviewsBy[loop.index0] }}</strong></p>
+                </div>
                 <hr>
             {% endfor %}
             {% if allowed %}

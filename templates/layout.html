@@ -12,19 +12,20 @@
     <nav>
         <div class="max-width-container">
             {% if username %}
-                <div class="loggedIn">
-                    <span><i class="fas fa-user"></i>{{ username[0] }}</span>
-                    <a class="btn" href="{{ url_for('logout') }}"><span></span> Logout</a>
-                </div>
+                <a href="{{ url_for('logout') }}">
+                    <div class="logged-in">
+                        <span><i class="fas fa-user"></i> {{ username }}</span>
+                        <span> - Logout</span>  
+                    </div>
+                </a>
             {% endif %}
-            </div>
         </div>
-    <div>
     </nav>
-    {% block body %}   
-        <!-- HTML Blocks for templates, reusable pages with dynamic content -->
-    {% endblock %}
-
+    <main> 
+        {% block body %}   
+            <!-- HTML Blocks for templates, reusable pages with dynamic content -->
+        {% endblock %}
+    </main>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script>
 </body>
 </html>

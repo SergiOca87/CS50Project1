@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, jsonify, session
 from flask_session import Session
 
 # sqlalchemy is used to use sql commands in flask apps, to communicate with dbs
@@ -120,7 +120,7 @@ def books(title):
     avg_rating = data['books'][0]['average_rating']
     ratings_count = data['books'][0]['ratings_count']
 
-    return render_template("book.html", book=book, avg_rating=avg_rating, ratings_count=ratings_count, reviews=reviews, reviewsBy=reviewsBy, allowed=allowed)
+    return render_template("book.html", book=book, avg_rating=avg_rating, ratings_count=ratings_count, reviews=reviews, reviewsBy=reviewsBy, allowed=allowed, username=session['user'][0])
 
 # Route designed to leave the reviews
 @app.route('/book', methods=["POST"]) 
@@ -132,20 +132,13 @@ def book():
     book_id = request.form.get("book_id")
    
 
-    # Retake Here :
-    # Users should not be able to submit multiple reviews for the same book.
-    # Use the new user_id column in the reviews table to associate reviews with users
-    # We can also show a by: {username} with that
-
-    # Make surethe book exists.
+    # Make sure the book exists.
     if db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).rowcount == 0:
         return render_template("error.html", message="No such book with that id was found in our database.")
     db.execute("INSERT INTO reviews (stars, review, book_id, user_id) VALUES (:stars, :review, :book_id, :user_id)",
             {"stars": stars, "review": review, "book_id": book_id, "user_id": session['user'][1]})
     db.commit()
     return render_template("reviewsuccess.html")
-
-
 
 
 @app.route('/user', methods=["GET", "POST"])
@@ -159,6 +152,34 @@ def user():
         books = db.execute("SELECT * FROM books WHERE title LIKE :searchValue OR isbn LIKE :searchValue OR author LIKE :searchValue LIMIT 10",
                            {"searchValue": searchValue}).fetchall()
 
-        return render_template('books.html', books=books, username=session['user'])
+        return render_template('books.html', books=books, username=session['user'][0])
+
+
+
+@app.route('/api/<isbn>', methods=["GET"])
+def book_api(isbn):
+
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+
+    if book is None:
+        return jsonify({"error": "Book not found"}), 404
+
+
+    isbn = book['isbn']
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": os.getenv("GOODREADSKEY"), "isbns": isbn})
+
+    data = res.json()
+
+    avg_rating = data['books'][0]['average_rating']
+    review_count = data['books'][0]['reviews_count']
+
+    return jsonify({
+               "title": book.title,
+                "author": book.author,
+                "year": book.year,
+                "isbn": book.isbn,
+                "review_count": review_count ,
+                "average_score": avg_rating
+          })
 
         

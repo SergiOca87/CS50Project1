@@ -77,6 +77,7 @@ $bp-small: 640px;
 
 
 html {
+    height: 100%;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	font-size: 62.5%;
@@ -88,6 +89,7 @@ html {
 }
 
 body {
+    height: 100%;
     padding: 0;
     margin: 0;
 	font-family: 'Muli-Medium', sans-serif;
@@ -95,40 +97,12 @@ body {
 	overflow-x: hidden;
 	color: inherit;
 	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-
-h1, h2, h3, h4 {
-    font-family: 'Muli-Semi-Bold', sans-serif;
-    margin-top: 0;
-}
-
-h1 {
-	font-size: 5rem;
-	line-height: 4.5rem;
-}
-
-p {
-
-    &.lead {
-        font-size: 2rem;
-    }
-}
-
-
-section {
-    min-height: 30vh;
-    z-index: 10;
-    position: relative;
-}
-
-body {
-    height: 100vh;
-    min-height: 70rem;
+    -moz-osx-font-smoothing: grayscale;
     background-image: url('./img/library1.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
+    padding-bottom: 10rem;
 
     .overlay {
         position: absolute;
@@ -142,9 +116,46 @@ body {
     }
 }
 
+main {
+    padding-top: 10rem;
+
+    @media screen and(max-width: $bp-medium) {
+        padding-top: 5rem;
+    }
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Muli-Semi-Bold', sans-serif;
+    margin-top: 0;
+}
+
+h1 {
+	font-size: 5rem;
+	line-height: 4.5rem;
+}
+
+h3 {
+    line-height: 1.5;
+}
+
+p {
+
+    &.lead {
+        font-size: 2rem;
+    }
+}
+
+
+section {
+    min-height: 20vh;
+    z-index: 10;
+    position: relative;
+}
+
 nav {
     position: relative;
     z-index: 10;
+    text-align: right;
 }
 
 .max-width-container {
@@ -173,19 +184,35 @@ nav {
     @include display-flex(column, unset, unset);
     position: relative;
     border-radius: 5px;
-    padding: 2rem;
+    padding: 4rem 3rem;
     color: #000;
     // height: 20rem;
     background-color: $white;
     max-width: 50rem;
     margin: 0 auto;
     z-index: 10;
+
+    form, .form {
+        padding: 0;
+    }
 }
+
+.logged-in {
+    display: inline-block;
+    padding: 1rem 3rem;
+    margin-top: 1rem;
+    color: #fff;
+    border: 1px solid $green;
+    background-color: rgba(132, 169, 192, .2);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 
 .form {
     position: relative;
     border-radius: 5px;
-    padding: 2rem;
+    padding: 4rem 3rem;
     color: #000;
     // height: 20rem;
     background-color: $white;
@@ -195,10 +222,19 @@ nav {
 
     &__buttons {
         @include display-flex(row, center, unset);
+        margin-top: 2rem;
+
+        @media screen and(max-width:$bp-small) {
+            flex-direction: column;
+        }
 
         .btn {
             margin: 0 10px 0 10px;
             cursor: pointer;
+
+            @media screen and(max-width: 450px) {
+                margin: 10px 0;
+            }
         }
     }
 
@@ -209,12 +245,13 @@ nav {
         height: 5rem;
         padding: 0 2rem;
         margin: 0 auto 2rem auto;
+        border-radius: 5px;
+        border: 1px solid rgba(0,0,0,.2);
     }
 
     &.small {
         max-width: 38rem;
         width: 100%;
-        padding: 1rem 2rem;
     }
 }
 
@@ -257,7 +294,7 @@ nav {
 .homepage {
     
     &__hero {
-        min-height: 30rem;
+        margin-bottom: 4rem;
         @include display-flex(row, unset, center);
         position: relative;
         
@@ -268,9 +305,9 @@ nav {
         }
     }
 
-    // &__login__form {
-       
-    // }
+    &__login__form {
+        @include display-flex(column, center, center);
+    }
 }
 
 //Books
@@ -290,4 +327,23 @@ nav {
         background-color: $white;
         border-radius: 5px;
     }
+
+    &-details {
+
+        h1 {
+            font-size: 4rem;
+        }
+    }
+
+    &-details-block {
+        margin-bottom: 2rem;
+
+        h3 {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.reviews-title {
+    margin-bottom: 0;
 }
